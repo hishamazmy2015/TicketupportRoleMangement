@@ -6,7 +6,8 @@ My EndPoints->
 Just -> Use POST-MAN
 
 ========================================================================
-Post Method => http://localhost:8080/api/auth/signup
+
+#Post Method => http://localhost:8080/api/auth/signup
 
 {
 	  "email":"email@gmail.com",
@@ -18,7 +19,8 @@ Post Method => http://localhost:8080/api/auth/signup
 }
 
 ==========================================================================
-POST Method => localhost:8080/api/auth/login
+
+#POST Method => localhost:8080/api/auth/login
 {
 
    		"username":"username",
@@ -27,18 +29,22 @@ POST Method => localhost:8080/api/auth/login
 
 
 ========================================================================
-Post Method => http://localhost:8080/api/tickets/add
+
+#Post Method => http://localhost:8080/api/tickets/add
 
 {
 	"message":"Message example 2"
 }
 
 ========================================================================
-PUT Method => localhost:8080/api/user/edit-firstName
+
+#PUT Method => localhost:8080/api/user/edit-firstName
 {
    		"firstName":"hishamsdddsdds5"
 }
 
 ========================================================================
-Get Method => http://localhost:8080/api/tickets/list
+
+#Get Method => http://localhost:8080/api/tickets/list
+
 
