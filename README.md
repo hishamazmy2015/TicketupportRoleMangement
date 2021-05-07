@@ -1,7 +1,9 @@
 # TicketupportRoleMangement
 
+
 My EndPoints-> 
 
+Just -> Use POST-MAN
 
 ========================================================================
 Post Method => http://localhost:8080/api/auth/signup
