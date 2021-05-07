@@ -21,10 +21,10 @@ Just -> Use POST-MAN
 ==========================================================================
 
 #POST Method => localhost:8080/api/auth/login
-{
 
-   		"username":"username",
-        "password":"password"
+{
+"username":"username",
+"password":"password"
 }
 
 
