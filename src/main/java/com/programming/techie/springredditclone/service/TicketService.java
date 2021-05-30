@@ -20,7 +20,7 @@ public class TicketService {
 
     @Transactional(readOnly = true)
     public List<Ticket> getAllTickets() {
-        return ticketRepository.findAll();
+        return (List<Ticket>) ticketRepository.findAll();
     }
 
     @Transactional

@@ -9,14 +9,11 @@ import org.springframework.data.annotation.Id;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Ticket {
-    @Id
-    private Long ticketId;
-    private String userId;
-    private String message;
 
-    public Ticket(String userId, String message) {
-        this.userId = userId;
-        this.message = message;
-    }
+public class Statement {
+    @org.springframework.data.annotation.Id
+    private Long Id;
+    private Long AccountId;
+    private String datefield;
+    private String amount;
 }
