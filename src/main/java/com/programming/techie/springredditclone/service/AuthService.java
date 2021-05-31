@@ -19,8 +19,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -35,11 +35,8 @@ public class AuthService {
 
     public void signup(RegisterRequest registerRequest) {
         User user = new User();
-        user.setEmail(registerRequest.getEmail());
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setFirstName(registerRequest.getFirstName());
         user.setUsername(registerRequest.getUsername());
-        user.setLastName(registerRequest.getLastName());
         user.setRole(registerRequest.getRole());
         userRepository.save(user);
     }
@@ -53,8 +50,12 @@ public class AuthService {
     }
 
     public AuthenticationResponse login(LoginRequest loginRequest) {
-        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),
-                loginRequest.getPassword()));
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                loginRequest.getUsername(),
+                loginRequest.getPassword(),
+                new ArrayList<>()
+        ));
+        System.out.println("authenticate " + authenticate);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
         return AuthenticationResponse.builder()

@@ -23,12 +23,7 @@ public class UserService {
     }
 
 
-    @Transactional
-    public void editUser(String firstName) {
-        User currentUser = authService.getCurrentUser();
-        currentUser.setFirstName(firstName);
-        userRepository.save(currentUser);
-    }
+
 
 
 }

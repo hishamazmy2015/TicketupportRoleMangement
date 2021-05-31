@@ -25,14 +25,14 @@ public class UserController {
      *
      * @param updatedUserName
      */
-    @PutMapping("/api/user/edit-firstName")
-    public ResponseEntity<String> updateFirstNameOfUser(@RequestBody() UpdateUserName updatedUserName) {
-        if (updatedUserName.getFirstName() == null || updatedUserName.getFirstName().isEmpty())
-            return status(HttpStatus.EXPECTATION_FAILED).body("Please Fill the 'firstName' with value");
-        else
-            userService.editUser(updatedUserName.getFirstName());
-        return status(HttpStatus.OK).body("FirstName has updated Successfully.");
-    }
+//    @PutMapping("/api/user/edit-firstName")
+//    public ResponseEntity<String> updateFirstNameOfUser(@RequestBody() UpdateUserName updatedUserName) {
+//        if (updatedUserName.getFirstName() == null || updatedUserName.getFirstName().isEmpty())
+//            return status(HttpStatus.EXPECTATION_FAILED).body("Please Fill the 'firstName' with value");
+//        else
+//            userService.editUser(updatedUserName.getFirstName());
+//        return status(HttpStatus.OK).body("FirstName has updated Successfully.");
+//    }
 
     /**
      * List All Users .

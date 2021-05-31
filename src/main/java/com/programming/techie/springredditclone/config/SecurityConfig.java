@@ -38,10 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.cors().and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/auth/**")
-                .permitAll()
                 .antMatchers("/api/user/edit").hasAnyRole("user", "admin")
                 .antMatchers("/api/users/list", "/api/users/list/").authenticated()
+
+                .antMatchers("/api/auth/**")
+                .permitAll()
                 .antMatchers("/api/bank/statements").permitAll()
                 .anyRequest()
                 .authenticated().and()

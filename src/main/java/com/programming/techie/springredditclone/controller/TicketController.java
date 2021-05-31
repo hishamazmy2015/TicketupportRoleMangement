@@ -34,14 +34,14 @@ public class TicketController {
      *
      * @param ticket
      */
-    @PostMapping("/add")
-    public ResponseEntity<String> addTicket(/*@RequestHeader(name = "Authorization") String token,*/ @RequestBody TicketRequest ticket) {
-        if (ticket.getMessage() == null || ticket.getMessage().isEmpty())
-            return status(HttpStatus.EXPECTATION_FAILED).body("Please Fill the 'message' with value");
-        else
-            ticketService.saveTicket(ticket.getMessage());
-        return status(HttpStatus.OK).body("Ticket has saved Successfully ");
-    }
+//    @PostMapping("/add")
+//    public ResponseEntity<String> addTicket(/*@RequestHeader(name = "Authorization") String token,*/ @RequestBody TicketRequest ticket) {
+//        if (ticket.getMessage() == null || ticket.getMessage().isEmpty())
+//            return status(HttpStatus.EXPECTATION_FAILED).body("Please Fill the 'message' with value");
+//        else
+//            ticketService.saveTicket(ticket.getMessage());
+//        return status(HttpStatus.OK).body("Ticket has saved Successfully ");
+//    }
 
     /**
      * List all Ticket support.

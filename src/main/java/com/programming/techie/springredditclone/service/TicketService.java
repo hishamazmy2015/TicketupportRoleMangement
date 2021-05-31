@@ -23,12 +23,12 @@ public class TicketService {
         return (List<Ticket>) ticketRepository.findAll();
     }
 
-    @Transactional
-    public void saveTicket(String message) {
-        User currentUser = authService.getCurrentUser();
-        Ticket ticket = new Ticket(String.valueOf(currentUser.getUserId()), message);
-        ticketRepository.save(ticket);
-    }
+//    @Transactional
+//    public void saveTicket(String message) {
+//        User currentUser = authService.getCurrentUser();
+//        Ticket ticket = new Ticket(String.valueOf(currentUser.getUserId()), message);
+//        ticketRepository.save(ticket);
+//    }
 
 
 }

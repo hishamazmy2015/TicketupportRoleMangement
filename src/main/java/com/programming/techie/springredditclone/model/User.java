@@ -14,22 +14,27 @@ import javax.validation.constraints.NotEmpty;
 @NoArgsConstructor
 
 public class User {
-    @Id
-    private Long userId;
-
-    @NotBlank(message = "Password is required")
-    private String password;
-
-    @Email
-    @NotEmpty(message = "Email is required")
-    private String email;
-
-    private String firstName;
-
+    @org.springframework.data.annotation.Id
+    private Integer ID;
     private String username;
-
-    private String lastName;
-
+    private String password;
     private String role;
+//    @Id
+//    private Long userId;
+//
+//    @NotBlank(message = "Password is required")
+//    private String password;
+//
+//    @Email
+//    @NotEmpty(message = "Email is required")
+//    private String email;
+//
+//    private String firstName;
+//
+//    private String username;
+//
+//    private String lastName;
+//
+//    private String role;
 
 }

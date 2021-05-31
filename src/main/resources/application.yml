@@ -6,7 +6,8 @@ spring:
   ##### Datasource Configuration #####
   datasource:
     driver-class-name: net.ucanaccess.jdbc.UcanaccessDriver
-    url: jdbc:ucanaccess://E:/accountsdb.accdb;openExclusive=false;ignoreCase=true
+    url: jdbc:ucanaccess://E:/DIR/accountsdb.accdb;openExclusive=false;ignoreCase=true
+#    url: jdbc:ucanaccess://E:/accountsdb.accdb;openExclusive=false;ignoreCase=true
 
 
 ###### session configuration ######
