@@ -15,8 +15,14 @@ import java.time.LocalDate;
 @Builder
 
 public class StatementsDto {
-    private String Id;
+//    private String Id;
+//    private String AccountId;
+//    private String datefield;
+//    private String amount;
+
+    private Long Id;
     private String AccountId;
-    private String datefield;
-    private String amount;
+    private LocalDate datefield;
+    private BigDecimal amount;
+
 }

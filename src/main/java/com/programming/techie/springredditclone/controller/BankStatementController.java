@@ -1,16 +1,16 @@
 package com.programming.techie.springredditclone.controller;
 
-import com.programming.techie.springredditclone.dto.StatementsDto;
-import com.programming.techie.springredditclone.model.Ticket;
 import com.programming.techie.springredditclone.service.AuthService;
-import com.programming.techie.springredditclone.service.StatementsService;
+import com.programming.techie.springredditclone.service.HandleUtilityService;
+//import com.programming.techie.springredditclone.service.StatementsService;
+import com.programming.techie.springredditclone.service.StatementService;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static org.springframework.http.ResponseEntity.status;
 
@@ -19,9 +19,41 @@ import static org.springframework.http.ResponseEntity.status;
 @RequestMapping("/api/bank")
 public class BankStatementController {
 
+    private static final Logger logger = LogManager.getLogger(BankStatementController.class);
 
-    private final StatementsService statementsService;
+    private final StatementService statementsService;
     private final AuthService authService;
+    private final HandleUtilityService handleUtilityService;
+
+//    public HttpEntity<?> getStatementsByParams(@RequestHeader(name = "Authorization") String token,
+//                                               @RequestParam List<Map<String, String>> params) {
+//        if (authService.getAuthorization(token)) {
+//            /**
+//             *
+//             * Inside Admin
+//             *
+//             * */
+//            System.out.println("Last Three Month " + statementsService.getStatmentsByThreeMoths());
+//            return status(HttpStatus.OK).body(statementsService.getStatmentsByArgs(params));
+//
+//
+//        } else {
+//            /**
+//             *
+//             * Inside User
+//             *
+//             * */
+//
+//            if (!handleUtilityService.areAllNull(params))
+//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+//
+//
+//            System.out.println("Last Three Month " + statementsService.getStatmentsByThreeMoths());
+//            return status(HttpStatus.OK).body(statementsService.getStatmentsByThreeMoths());
+//            //Log
+//        }
+//
+//    }
 
 
     /**
@@ -34,9 +66,9 @@ public class BankStatementController {
      * @param toAmount
      */
     @GetMapping("/statements")
-    public HttpEntity<? extends Object> getStatementsByParams(
+    public HttpEntity<?> getStatementsByParams(
             @RequestHeader(name = "Authorization") String token,
-            @RequestParam(value = "accountId") String accountId,
+            @RequestParam(value = "accountId", required = false) String accountId,
             @RequestParam(value = "fromDate", required = false) String fromDate,
             @RequestParam(value = "toDate", required = false) String toDate,
             @RequestParam(value = "fromAmount", required = false) String fromAmount,
@@ -44,25 +76,30 @@ public class BankStatementController {
     ) {
         if (authService.getAuthorization(token)) {
             /**
+             *
              * Inside Admin
+             *
              * */
-
-            if (statementsService.areAllNull(accountId, fromDate, toDate, fromAmount, toAmount))
-                return status(HttpStatus.OK).body((List<StatementsDto>) statementsService.getStatmentsByArgs(accountId, fromDate, toDate, fromAmount, toAmount));
-            else
-                return status(HttpStatus.OK).body((List<StatementsDto>) statementsService.getStatmentsByArgs(accountId, fromDate, toDate, fromAmount, toAmount));
+            System.out.println("Last Three Month " + statementsService.getStatments(accountId, fromDate, toDate, fromAmount, toAmount));
+            return status(HttpStatus.OK).body(statementsService.getStatments(accountId, fromDate, toDate, fromAmount, toAmount));
+//            return status(HttpStatus.OK).body(statementsService.getStatmentsByArgs(accountId, fromDate, toDate, fromAmount, toAmount));
 
 
         } else {
             /**
+             *
              * Inside User
+             *
              * */
-            statementsService.getStatmentsByThreeMoths(accountId, fromDate, toDate, fromAmount, toAmount);
 
-            return new ResponseEntity<String>("test", HttpStatus.UNAUTHORIZED);
+            if (!handleUtilityService.areAllNull(accountId, fromDate, toDate, fromAmount, toAmount))
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+
+            System.out.println("Last Three Month " + statementsService.getStatments(accountId, fromDate, toDate, fromAmount, toAmount));
+            return status(HttpStatus.OK).body(statementsService.getStatments(accountId, fromDate, toDate, fromAmount, toAmount));
+            //Log
         }
-        //            return status(HttpStatus.UNAUTHORIZED).body("Not Allowed ");
-//        return null;
     }
 
 }
@@ -82,6 +119,13 @@ public class BankStatementController {
 
 
  */
+
+//            return new ResponseEntity<String>("test", HttpStatus.UNAUTHORIZED);
+
+
+//            return status(HttpStatus.UNAUTHORIZED).body("Not Allowed ");
+//        return null;
+
 //        else
 //        return status(HttpStatus.FORBIDDEN).body(null);
 //        statementsService.getAllTickets();
