@@ -36,20 +36,13 @@ public class StatementServiceImpl implements StatementService {
         try {
             boolean isDateRaneFilter = false;
             boolean isAmountRangeFilter = false;
-//            LocalDate startDate = null;
-//            LocalDate endDate = null;
-//            BigDecimal startAmount = null;
-//            BigDecimal endAmount = null;
+
 
             if (null != fromAmount && null != toAmount) {
                 isAmountRangeFilter = true;
-//                startAmount = new BigDecimal(fromAmount);
-//                endAmount = new BigDecimal(toAmount);
             }
             if (null != fromDate && null != toDate) {
                 isDateRaneFilter = true;
-//                startDate = handleUtilityService.convertStrToDate(fromDate);
-//                endDate = handleUtilityService.convertStrToDate(toDate);
             }
 
             List<StatementsDto> StatementsDtos = handleUtilityService.mapListToDTO(statementRepository.getAllByFilterArgs());

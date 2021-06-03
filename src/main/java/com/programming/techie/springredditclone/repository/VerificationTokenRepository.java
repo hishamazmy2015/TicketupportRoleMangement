@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface VerificationTokenRepository extends CrudRepository<Token, Long> {
+
     /**
      * Spring Data JPA also supports derived delete queries that let you avoid having to declare the JPQL query explicitly
      */

@@ -72,6 +72,7 @@ public class JwtProvider {
             return false;
         } catch (ExpiredJwtException ex) {
             log.error(ExpiredJwtExceptionSTR + ex);
+            deleteToken(jwt);
             return false;
         }
     }
@@ -131,9 +132,9 @@ public class JwtProvider {
         return "";
     }
 
-//    public void deleteToken(String token) {
-//        verificationTokenRepository.deleteByToken(token);
-//    }
+    public void deleteToken(String token) {
+        verificationTokenRepository.deleteByToken(token);
+    }
 
     public Long getJwtExpirationInMillis() {
         return jwtExpirationInMillis;

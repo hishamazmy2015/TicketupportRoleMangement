@@ -43,21 +43,6 @@ public class HandleUtilityService {
         return null;
     }
 
-    public String convertToFormatDateDB(String dateValue) {
-        try {
-            LocalDate date = LocalDate.parse(dateValue);
-            // print instance
-            System.out.println("LocalDate before"
-                    + " adding months: " + date);
-            // add 3 months
-            LocalDate returnvalue = date.plusMonths(3);
-            String format = returnvalue.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-            return format;
-        } catch (ParserException e) {
-            log.error(" Error when parsing the String to  date ", e);
-        }
-        return null;
-    }
 
     /**
      * Last Three Months
@@ -67,23 +52,6 @@ public class HandleUtilityService {
         return Stream.of(objects).allMatch(Objects::isNull);
     }
 
-    public static boolean areAllNotNull(Object... objects) {
-        return Stream.of(objects).allMatch(Objects::nonNull);
-    }
-
-    public String LastThreeMonthDate() {
-        try {
-            LocalDate date = LocalDate.now();
-            // add 3 months
-            LocalDate returnThreeMonthvalue = date.plusMonths(3);
-            System.out.println("Converted Date is " + returnThreeMonthvalue.format(DateTimeFormatter.ofPattern("dd.MM.yyyy")));
-            return returnThreeMonthvalue.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-        } catch (ParserException e) {
-            log.error(" Error when parsing the String to  date ", e);
-        }
-        return null;
-    }
 
     public LocalDate convertStrToDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");

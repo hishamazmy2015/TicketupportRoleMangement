@@ -63,11 +63,11 @@ public class AuthService {
         TokenDto tokenDto = verificationTokenRepository
                 .findByUser(loginRequest.getUsername()).orElse(null);
         if (tokenDto == null)
-            return createToken(loginRequest, false);
+            return createToken(loginRequest);
         Token verificationToken = handleUtilityService.mapTokenDTOList(tokenDto);
         try {
             if (!jwtProvider.validateToken(verificationToken.getTokenvalue())) {
-                return createToken(loginRequest, true);
+                return createToken(loginRequest);
             }
         } catch (IncorrectResultSizeDataAccessException ex) {
             return null;
@@ -76,19 +76,18 @@ public class AuthService {
     }
 
 
-    public AuthenticationResponse createToken(LoginRequest loginRequest, boolean tokenIsExist) {
+    public AuthenticationResponse createToken(LoginRequest loginRequest) {
         Authentication authenticate = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
                         loginRequest.getPassword(),
                         new ArrayList<>()
                 ));
-        System.out.println("authenticate " + authenticate);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
-        if (!tokenIsExist)
-            verificationTokenRepository.save(new Token(token, loginRequest.getUsername()
-                    , Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis())));
+//        if (!tokenIsExist)
+        verificationTokenRepository.save(new Token(token, loginRequest.getUsername()
+                , Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis())));
 
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
@@ -109,11 +108,7 @@ public class AuthService {
         return auth.getAuthority().equals("admin");
     }
 
-//    @Transactional
-//    public void deleteToken(String token) {
-//        jwtProvider.deleteToken(token);
-//    }
-
+    @Transactional
     public void deleteToken(String token) {
         verificationTokenRepository.deleteByToken(token);
     }

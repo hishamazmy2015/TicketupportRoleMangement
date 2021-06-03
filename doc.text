@@ -47,4 +47,17 @@ Just -> Use POST-MAN
 
 #Get Method => http://localhost:8080/api/tickets/list
 
+Resources Ref:-
+
 https://www.toptal.com/java/spring-boot-rest-api-error-handling
+LogAPI
+
+========================================================================
+
+Testing :
+https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.testing
+
+========================================================================
+
+Init sonarscanner :
+https://medium.com/swlh/sonarqube-sonarscanner-setup-1a633b654828
