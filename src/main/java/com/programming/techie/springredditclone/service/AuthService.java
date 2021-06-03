@@ -109,9 +109,13 @@ public class AuthService {
         return auth.getAuthority().equals("admin");
     }
 
-    @Transactional
+//    @Transactional
+//    public void deleteToken(String token) {
+//        jwtProvider.deleteToken(token);
+//    }
+
     public void deleteToken(String token) {
-        jwtProvider.deleteToken(token);
+        verificationTokenRepository.deleteByToken(token);
     }
 }
 
