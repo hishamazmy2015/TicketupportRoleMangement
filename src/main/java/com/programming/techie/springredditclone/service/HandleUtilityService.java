@@ -5,7 +5,6 @@ import com.programming.techie.springredditclone.mapper.StatementsMapper;
 import com.programming.techie.springredditclone.model.Statement;
 import com.programming.techie.springredditclone.model.Token;
 import com.programming.techie.springredditclone.repository.TokenDto;
-import io.jsonwebtoken.ExpiredJwtException;
 import jdk.nashorn.internal.runtime.ParserException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -63,13 +62,6 @@ public class HandleUtilityService {
         return null;
     }
 
-//    public List<StatementsDto> mapListToDTO(List<Statement> statements) {
-//        return
-//                statements.stream().
-//                        map(statementsMapper::mapDtoToStatementDto).
-//                        collect(toList());
-//
-//    }
 
     public List<StatementsDto> mapListToDTO(List<Statement> statements) {
         List<StatementsDto> StatementsDtos = new ArrayList<>();
@@ -77,6 +69,7 @@ public class HandleUtilityService {
             StatementsDto StatementsDto = new StatementsDto();
             StatementsDto.setAccountId(bCryptPasswordEncoder.encode(String.valueOf(statement.getAccountId())));
             StatementsDto.setAmount(new BigDecimal(statement.getAmount()));
+            StatementsDto.setId(statement.getId());
             StatementsDto.setDatefield(this.stringToDate(statement.getDatefield()));
             StatementsDtos.add(StatementsDto);
         });
@@ -109,37 +102,3 @@ public class HandleUtilityService {
     }
 
 }
-/*
-    String date = "2017-12-04T08:07:00Z";
-        System.out.println(Instant.parse(date));
-//        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-//        String caseStartDate = dateFormat.format(tokenDto.getExpiredate());
-//        System.out.println(caseStartDate);
-//        LocalDateTime localdatetime = LocalDateTime.parse(caseStartDate, dateFormat);
-//        System.out.println(localdatetime);
-//        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-//        DateTime dt = dtf.parseDateTime("2013-07-17T03:58:00.000Z");
-//        Date date = dt.toDate();
-
-//        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2021-06-02 22:48:18");
-
-
-//        new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2021-06-02 22:48:18.703").toInstant();
-//        System.out.println("sdf.format(tokenDto.getExpiredate())  "+sdf.format(tokenDto.getExpiredate()));
-        // use SimpleDateFormat to define how to PARSE the INPUT
-
-//        LocalDate parse = LocalDate.parse(tokenDto.getExpiredate(), formatter);
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-//                Date date = sdf.parse(tokenDto.getExpiredate());
-//        Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis());
-//        return LocalDate.parse(date, DateTimeFormat.forPattern("ddMMyyyy"));
-
-//        System.out.println(
-//                DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssZ")
-//                        .withZone(ZoneId.of("UTC"))
-//                        .format(Instant.parse(tokenDto.getExpiredate()))
-//        );
-
-
-*/

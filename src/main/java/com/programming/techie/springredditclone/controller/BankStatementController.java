@@ -3,7 +3,6 @@ package com.programming.techie.springredditclone.controller;
 import com.programming.techie.springredditclone.exceptions.EntityNotFoundException;
 import com.programming.techie.springredditclone.service.AuthService;
 import com.programming.techie.springredditclone.service.HandleUtilityService;
-//import com.programming.techie.springredditclone.service.StatementsService;
 import com.programming.techie.springredditclone.service.StatementService;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -29,8 +28,6 @@ public class BankStatementController {
     private final HandleUtilityService handleUtilityService;
 
 
-//?accountId=1&fromDate=05.07.2018&toDate=15.11.2020&fromAmount=166.470541608144&toAmount=386.908121686113
-
     /**
      * Fetch Statements By Args.
      *
@@ -44,10 +41,10 @@ public class BankStatementController {
     public HttpEntity<?> getStatementsByParams(
             @RequestHeader(name = "Authorization") String token,
             @RequestParam(value = "accountId", required = false) @Valid String accountId,
-            @RequestParam(value = "fromDate", required = false)@Valid  String fromDate,
-            @RequestParam(value = "toDate", required = false)@Valid  String toDate,
+            @RequestParam(value = "fromDate", required = false) @Valid String fromDate,
+            @RequestParam(value = "toDate", required = false) @Valid String toDate,
             @RequestParam(value = "fromAmount", required = false) @Valid String fromAmount,
-            @RequestParam(value = "toAmount", required = false)@Valid String toAmount
+            @RequestParam(value = "toAmount", required = false) @Valid String toAmount
     ) throws EntityNotFoundException {
         if (authService.getAuthorization(token)) {
             /**
@@ -65,7 +62,6 @@ public class BankStatementController {
              * */
 
             if (!handleUtilityService.areAllNull(accountId, fromDate, toDate, fromAmount, toAmount))
-//                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
                 return new ResponseEntity<>("You are not Authorized to filter By Args ", HttpStatus.UNAUTHORIZED);
 
 
@@ -75,52 +71,3 @@ public class BankStatementController {
     }
 
 }
-
-/*
-
-
-
-
-
-
-
-
-
-
-
-
-
- */
-
-//            return new ResponseEntity<String>("test", HttpStatus.UNAUTHORIZED);
-
-
-//            return status(HttpStatus.UNAUTHORIZED).body("Not Allowed ");
-//        return null;
-
-//        else
-//        return status(HttpStatus.FORBIDDEN).body(null);
-//        statementsService.getAllTickets();
-//        if (ticket.getMessage() == null || ticket.getMessage().isEmpty())
-//            return status(HttpStatus.EXPECTATION_FAILED).body("Please Fill the 'message' with value");
-//        else
-//            ticketService.saveTicket(ticket.getMessage());
-//        return status(HttpStatus.OK).body("statement has saved Successfully ");
-
-
-//    /**
-//     * List all Ticket support.
-//     *
-//     * @param token
-//     */
-//    @GetMapping("/list")
-////    @Secured(value = "admin")
-//    public ResponseEntity<List<Ticket>> getAllTicket(@RequestHeader(name = "Authorization") String token) {
-//        if (authService.getAuthorization(token))
-//            return status(HttpStatus.OK).body(ticketService.getAllTickets());
-//        else
-//            return status(HttpStatus.FORBIDDEN).body(null);
-//    }
-
-
-
