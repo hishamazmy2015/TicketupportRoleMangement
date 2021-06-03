@@ -56,6 +56,8 @@ public class BankStatementController {
 //    }
 
 
+//?accountId=1&fromDate=05.07.2018&toDate=15.11.2020&fromAmount=166.470541608144&toAmount=386.908121686113
+
     /**
      * Fetch Statements By Args.
      *
@@ -83,8 +85,6 @@ public class BankStatementController {
             System.out.println("Last Three Month " + statementsService.getStatments(accountId, fromDate, toDate, fromAmount, toAmount));
             return status(HttpStatus.OK).body(statementsService.getStatments(accountId, fromDate, toDate, fromAmount, toAmount));
 //            return status(HttpStatus.OK).body(statementsService.getStatmentsByArgs(accountId, fromDate, toDate, fromAmount, toAmount));
-
-
         } else {
             /**
              *

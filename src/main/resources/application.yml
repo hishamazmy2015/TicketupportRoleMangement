@@ -15,7 +15,7 @@ session:
   expiration: 864000000 #10 days
 jwt:
   expiration:
-    time: 90000
+    time: 9000000
 ###### token configuration ######
 token:
   secret: jf9i4jgu83nfl0jfu57ejf7

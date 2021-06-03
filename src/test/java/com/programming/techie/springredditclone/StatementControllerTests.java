@@ -77,29 +77,29 @@ public class StatementControllerTests {
 //    }
 
 
-//    @Test
-//    @DisplayName("GET /rest/widget/1 - Not Found")
-//    public void testGetWidgetByIdNotFound() throws Exception {
-//        // Setup our mocked service
-//        doReturn(Optional.empty()).when(service).getStatmentsByThreeMoths();
-//
-//        // Execute the GET request
-//        mockMvc.perform(get("/api/bank/statements/{id}", 1L))
-//                // Validate the response code
-//                .andExpect(status().isNotFound());
-//    }
-//
-//    static String asJsonString(final Object obj) {
-//        try {
-//            return new ObjectMapper().writeValueAsString(obj);
-//        } catch (Exception e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-//
-//    @Test
-//    public void contextLoads() {
-//    }
+    @Test
+    @DisplayName("GET /rest/widget/1 - Not Found")
+    public void testGetWidgetByIdNotFound() throws Exception {
+        // Setup our mocked service
+        doReturn(Optional.empty()).when(service).getStatmentsByThreeMoths();
+
+        // Execute the GET request
+        mockMvc.perform(get("/api/bank/statements/{id}", 1L))
+                // Validate the response code
+                .andExpect(status().isNotFound());
+    }
+
+    static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper().writeValueAsString(obj);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void contextLoads() {
+    }
 
 
 }

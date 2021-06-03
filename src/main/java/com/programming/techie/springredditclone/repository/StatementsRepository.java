@@ -3,6 +3,7 @@ package com.programming.techie.springredditclone.repository;
 import com.programming.techie.springredditclone.model.Statement;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface StatementsRepository extends PagingAndSortingRepository<Stateme
             "AND amount  >= ( CASE WHEN :fromAmount IS NULL THEN  amount ELSE :fromAmount END  )    " +
             "AND amount  <= ( CASE WHEN :toAmount IS NULL THEN  amount ELSE :toAmount END  )    " +
             "")
-    List<Statement> getAllByFilterArgs(String accountId, String fromDate, String toDate, String fromAmount, String toAmount);
+    List<Statement> getAllByFilterArgs(@Param("accountId") String accountId, @Param("fromDate") String fromDate, @Param("toDate") String toDate, @Param("fromAmount") String fromAmount, @Param("toAmount") String toAmount);
 
 
     @Query("select * FROM Statement   " +
