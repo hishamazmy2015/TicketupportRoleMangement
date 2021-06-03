@@ -29,8 +29,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
-        return authService.login(loginRequest);
+    public <T> T login(@RequestBody LoginRequest loginRequest) {
+        AuthenticationResponse login = authService.login(loginRequest);
+        return login != null ? (T) login : (T) ResponseEntity.status(HttpStatus.OK).body("Not Allowed login twice, You already login !!!");
     }
 
     @PostMapping("/logout")

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,10 +53,16 @@ public class StatementServiceImpl implements StatementService {
             }
 
             List<StatementsDto> StatementsDtos = handleUtilityService.mapListToDTO(statementRepository.getAllByFilterArgs());
+            Optional<LocalDate> max = StatementsDtos.stream().map(dat -> dat.getDatefield()).max(LocalDate::compareTo);
+            LocalDate recentDate = null;
+            LocalDate earlierDate = null;
+            if (max.isPresent()) {
+                recentDate = max.get();
+                earlierDate = max.get().minusMonths(3);
+            }
 
-            LocalDate recentDate = StatementsDtos.stream().map(dat -> dat.getDatefield()).max(LocalDate::compareTo).get();
-            LocalDate earlierDate = recentDate.minusMonths(3);
-
+            LocalDate finalEarlierDate = earlierDate;
+            LocalDate finalRecentDate = recentDate;
             return StatementsDtos.parallelStream()
                     .filter(isDateRaneFilter ?
                             StatementsDto ->
@@ -65,7 +72,7 @@ public class StatementServiceImpl implements StatementService {
                                     (StatementsDto.getAmount().compareTo(new BigDecimal(fromAmount)) > 0 && StatementsDto.getAmount().compareTo(new BigDecimal(toAmount)) < 0) : amountFilter -> true)
                     .filter((!isDateRaneFilter && !isAmountRangeFilter) ?
                             StatementsDto ->
-                                    (StatementsDto.getDatefield().isAfter(earlierDate) && StatementsDto.getDatefield().isBefore(recentDate)) : dateFilter -> true)
+                                    (StatementsDto.getDatefield().isAfter(finalEarlierDate) && StatementsDto.getDatefield().isBefore(finalRecentDate)) : dateFilter -> true)
                     .collect(Collectors.toList());
 
         } catch (

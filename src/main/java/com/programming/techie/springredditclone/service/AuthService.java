@@ -3,8 +3,8 @@ package com.programming.techie.springredditclone.service;
 import com.programming.techie.springredditclone.dto.AuthenticationResponse;
 import com.programming.techie.springredditclone.dto.LoginRequest;
 import com.programming.techie.springredditclone.dto.RegisterRequest;
-import com.programming.techie.springredditclone.model.User;
 import com.programming.techie.springredditclone.model.Token;
+import com.programming.techie.springredditclone.model.User;
 import com.programming.techie.springredditclone.repository.TokenDto;
 import com.programming.techie.springredditclone.repository.UserRepository;
 import com.programming.techie.springredditclone.repository.VerificationTokenRepository;
@@ -13,7 +13,6 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,14 +25,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -69,11 +63,11 @@ public class AuthService {
         TokenDto tokenDto = verificationTokenRepository
                 .findByUser(loginRequest.getUsername()).orElse(null);
         if (tokenDto == null)
-            return createToken(loginRequest);
+            return createToken(loginRequest, false);
         Token verificationToken = handleUtilityService.mapTokenDTOList(tokenDto);
         try {
             if (!jwtProvider.validateToken(verificationToken.getTokenvalue())) {
-                return createToken(loginRequest);
+                return createToken(loginRequest, true);
             }
         } catch (IncorrectResultSizeDataAccessException ex) {
             return null;
@@ -82,7 +76,7 @@ public class AuthService {
     }
 
 
-    public AuthenticationResponse createToken(LoginRequest loginRequest) {
+    public AuthenticationResponse createToken(LoginRequest loginRequest, boolean tokenIsExist) {
         Authentication authenticate = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -92,9 +86,9 @@ public class AuthService {
         System.out.println("authenticate " + authenticate);
         SecurityContextHolder.getContext().setAuthentication(authenticate);
         String token = jwtProvider.generateToken(authenticate);
-        verificationTokenRepository.save(new Token(token, loginRequest.getUsername()
-                , Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis())));
-
+        if (!tokenIsExist)
+            verificationTokenRepository.save(new Token(token, loginRequest.getUsername()
+                    , Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis())));
 
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
@@ -114,27 +108,10 @@ public class AuthService {
                 "Not Found : " + username));
         return auth.getAuthority().equals("admin");
     }
-//    public Boolean getAuthorization(String token) {
-//        try {
-//            String username = jwtProvider.getUsernameFromJwt(token);
-//            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-//            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
-//                    null, userDetails.getAuthorities());
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//            Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-//            SimpleGrantedAuthority auth = authorities.stream().findFirst().orElseThrow(() -> new UsernameNotFoundException("No user " +
-//                    "Not Found : " + username));
-//            return auth.getAuthority().equals("admin");
-//
-//        } catch (Exception e) {
-//            log.error("  Authorization   ", e);
-//            return false;
-//        }
-//    }
 
+    @Transactional
     public void deleteToken(String token) {
-        verificationTokenRepository.deleteByToken(token);
-
+        jwtProvider.deleteToken(token);
     }
 }
 
@@ -147,7 +124,21 @@ public class AuthService {
 
 
 
-
+    public <T> T login(LoginRequest loginRequest) {
+        TokenDto tokenDto = verificationTokenRepository
+                .findByUser(loginRequest.getUsername()).orElse(null);
+        if (tokenDto == null)
+            return (T) createToken(loginRequest, false);
+        Token verificationToken = handleUtilityService.mapTokenDTOList(tokenDto);
+        try {
+            if (!jwtProvider.validateToken(verificationToken.getTokenvalue())) {
+                return (T) createToken(loginRequest, true);
+            }
+        } catch (IncorrectResultSizeDataAccessException ex) {
+            return null;
+        }
+        return (T) new String("Already you are Login !!!");
+    }
 
 
 

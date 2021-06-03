@@ -1,26 +1,25 @@
 package com.programming.techie.springredditclone.security;
 
 import com.programming.techie.springredditclone.exceptions.CustomException;
+import com.programming.techie.springredditclone.repository.VerificationTokenRepository;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.*;
-import java.security.SignatureException;
 import java.security.cert.CertificateException;
-import java.sql.Date;
 import java.time.Instant;
-//import io.jsonwebtoken.Jwts;
+
 import static io.jsonwebtoken.Jwts.parserBuilder;
 import static java.util.Date.from;
 
@@ -28,10 +27,12 @@ import static java.util.Date.from;
 @Slf4j
 public class JwtProvider {
     private final Logger log = LoggerFactory.getLogger(JwtProvider.class);
-
+    @Autowired
+    private VerificationTokenRepository verificationTokenRepository;
     private KeyStore keyStore;
     @Value("${jwt.expiration.time}")
     private Long jwtExpirationInMillis;
+    private static final String ExpiredJwtExceptionSTR = "ExpiredJwtException";
 
     @PostConstruct
     public void init() {
@@ -50,7 +51,7 @@ public class JwtProvider {
         return Jwts.builder()
                 .setSubject(principal.getUsername())
                 .signWith(getPrivateKey())
-                .setExpiration(Date.from(Instant.now().plusMillis(jwtExpirationInMillis)))
+                .setExpiration(from(Instant.now().plusMillis(jwtExpirationInMillis)))
                 .compact();
     }
 
@@ -70,7 +71,7 @@ public class JwtProvider {
             log.error("INVALID_CREDENTIALS " + ex);
             return false;
         } catch (ExpiredJwtException ex) {
-            log.error("ExpiredJwtException " + ex);
+            log.error(ExpiredJwtExceptionSTR + ex);
             return false;
         }
     }
@@ -93,11 +94,11 @@ public class JwtProvider {
         } catch (ExpiredJwtException e) {
             System.out.println(" Token expired ");
         } catch (IncorrectResultSizeDataAccessException ex) {
-            log.error("ExpiredJwtException " + ex);
+            log.error(ExpiredJwtExceptionSTR + ex);
             return true;
         } catch (Exception e) {
             System.out.println("e ============ " + e);
-            log.error("ExpiredJwtException " + e);
+            log.error("Exception " + e);
         }
         return false;
     }
@@ -122,12 +123,16 @@ public class JwtProvider {
         } catch (ExpiredJwtException e) {
             System.out.println(" Token expired ");
         } catch (IncorrectResultSizeDataAccessException ex) {
-            log.error("ExpiredJwtException " + ex);
+            log.error(ExpiredJwtExceptionSTR + ex);
         } catch (Exception e) {
             System.out.println("e ============ " + e);
-            log.error("ExpiredJwtException " + e);
+            log.error("Exception has found " + e);
         }
         return "";
+    }
+
+    public void deleteToken(String token) {
+        verificationTokenRepository.deleteByToken(token);
     }
 
     public Long getJwtExpirationInMillis() {

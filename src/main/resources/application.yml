@@ -22,3 +22,8 @@ token:
   prefix: Bearer
 header:
   authorization: Authorization
+
+
+#  account-statement: e74b8bd54744f05313c5986658d417cff6f94061
+
+#  mvn sonar:sonar  -Dsonar.projectKey=account-statement   -Dsonar.host.url=http://localhost:9000   -Dsonar.login=e74b8bd54744f05313c5986658d417cff6f94061
